@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminCategoryController;
+use App\Http\Controllers\Admin\AdminPostController;
 use App\Http\Controllers\Admin\LoginController;
-use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,8 +27,12 @@ Route::group(['prefix' => '{language}' , 'where' => ['language' => '[a-zA-Z]{2}'
     Route::get('/admin-dashboard/login', [LoginController::class, 'index'])->name('admin-dashboard.login');
     Route::post('/admin-dashboard/login', [LoginController::class, 'store']);
 
-    Route::group(['middleware' => 'auth', 'prefix' => '/admin-dashboard', 'as' => 'admin-dashboard'], function () {
+    Route::group(['middleware' => 'auth', 'prefix' => '/admin-dashboard', 'as' => 'admin-dashboard.'], function () {
         Route::get('/', [AdminDashboardController::class, 'index']);
+        Route::get('/posts', [AdminPostController::class, 'index'])->name('posts.index');
+        Route::get('/posts/create', [AdminPostController::class, 'create'])->name('posts.create');
+        Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+        Route::get('/categories/create', [AdminCategoryController::class, 'create'])->name('categories.create');
     });
 
 } );
