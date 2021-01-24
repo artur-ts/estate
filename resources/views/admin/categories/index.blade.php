@@ -30,11 +30,18 @@
                     <tbody>
                         @foreach($categories as $category)
                             <tr>
-                                <td>{{ $category->id }}</td>
+                                <td>{{ $category->order }}</td>
                                 <td>{{ $category->translate('am')->title }}</td>
                                 <td>{{ $category->translate('ru')->title }}</td>
                                 <td>{{ $category->translate('en')->title }}</td>
-                                <td></td>
+                                <td>
+                                    <form action="{{ route('admin-dashboard.categories.delete', $category) }}" method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                    <button class="btn" onclick="deleteCateogry(this)"><i class="fa fa-trash"></i></button>
+                                    <a href="{{ route('admin-dashboard.categories.edit', $category) }}"><button class="btn"><i class="fa fa-edit"></i></button></a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -44,4 +51,22 @@
         </div>
         <div class="card-footer small text-muted"></div>
     </div>
+    <script>
+        function deleteCateogry(button) {
+            Swal.fire({
+                title: '{{ __('Do you want to delete this category?') }}',
+                showCancelButton: true,
+                confirmButtonText: `Delete`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    console.log(
+                        $(button).prev('form').submit()
+                    )
+
+                }
+            })
+        }
+
+    </script>
 @endsection

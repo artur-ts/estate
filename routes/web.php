@@ -31,8 +31,16 @@ Route::group(['prefix' => '{language}' , 'where' => ['language' => '[a-zA-Z]{2}'
         Route::get('/', [AdminDashboardController::class, 'index']);
         Route::get('/posts', [AdminPostController::class, 'index'])->name('posts.index');
         Route::get('/posts/create', [AdminPostController::class, 'create'])->name('posts.create');
-        Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
-        Route::get('/categories/create', [AdminCategoryController::class, 'create'])->name('categories.create');
+
+//        Route::group(['middleware' => 'super-admin'] , function () {
+            Route::get('/categories', [AdminCategoryController::class, 'index'])->name('categories.index');
+            Route::get('/categories/create', [AdminCategoryController::class, 'create'])->name('categories.create');
+            Route::post('/categories/create', [AdminCategoryController::class, 'store']);
+            Route::get('/categories/edit/{categoryId}', [AdminCategoryController::class, 'edit'])->name('categories.edit');
+            Route::put('/categories/edit/{categoryId}', [AdminCategoryController::class, 'update'])->name('categories.edit');
+            Route::delete('/categories/edit/{categoryId}', [AdminCategoryController::class, 'delete'])->name('categories.delete');
+//        });
+
     });
 
 } );
