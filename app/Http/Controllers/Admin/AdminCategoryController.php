@@ -23,7 +23,7 @@ class AdminCategoryController extends Controller
 
     public function store(StoreCategoryRequest $request)
     {
-        $maxOrder = Category::max('order');
+        $maxOrder = Category::withTrashed()->max('order');
         Category::create([
             "order" => $maxOrder+1,
             "en" => ["title" => $request->title['en']],
@@ -48,8 +48,8 @@ class AdminCategoryController extends Controller
             "ru" => ["title" => $request->title['ru']],
             "am" => ["title" => $request->title['am']]]
         );
-
-        return back();
+        $category->touch();
+        return redirect()->route('admin-dashboard.categories.index');
     }
 
     public function delete($locale, $cateogryId)
